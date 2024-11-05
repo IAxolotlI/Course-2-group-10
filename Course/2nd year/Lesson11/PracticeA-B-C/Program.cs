@@ -16,18 +16,23 @@ public class Student
 
     public void AddGrade()
     {
-        Console.Write("Vvedite predmet: ");
-        string subject = Console.ReadLine();
+        Console.Write("Vvedite kolichestvo predmetov: ");
+        int n = Console.ReadKey();
+        for (int i = 0; i < n; i++)
+        {
+            Console.Write("Vvedite predmet: ");
+            string subject = Console.ReadLine();
 
-        Console.Write("Vvedite ocenku: ");
-        if (int.TryParse(Console.ReadLine(), out int grade))
-        {
-            Grades[subject] = grade;
-            Console.WriteLine($"Ocenka {grade} po predmetu '{subject}' dobavlena.");
-        }
-        else
-        {
-            Console.WriteLine("Nekorrektnyj vvod. Ocenka ne dobavlena.");
+            Console.Write("Vvedite ocenku: ");
+            if (int.TryParse(Console.ReadLine(), out int grade))
+            {
+                Grades[subject] = grade;
+                Console.WriteLine($"Ocenka {grade} po predmetu '{subject}' dobavlena.");
+            }
+            else
+            {
+                Console.WriteLine("Nekorrektnyj vvod. Ocenka ne dobavlena.");
+            }
         }
     }
 
@@ -128,31 +133,41 @@ class SimpleDB
 
     public void SaveDB()
     {
-        Console.WriteLine("Funcional ne realizovan...");
-        //  practice B;
+        fileService.SaveToFile();
     }
 
     public void LoadDB()
     {
-        Console.WriteLine("Funcional ne realizovan...");
-        //  practice B;
+        fileService.LoadFromFile();
     }
     public void AddStudent(string name)
     {
-        Console.WriteLine("Funcional ne realizovan...");
-         //  practice A;
+        Student x = new Student();
+        x.Name = name;
+        x.AddGrade();
+        x.AddAttendance();
+        fileService.students.Add(name, x);
+        fileService.SaveToFile();
     }
 
     public void RemoveStudent(string name)
     {
-        Console.WriteLine("Funcional ne realizovan...");
-         //  practice A;
+        fileService.students.Remove(name);
     }
 
     public void ShowStudentInfo(string name)
     {
-        Console.WriteLine("Funcional ne realizovan...");
-         //  practice A;
+        Student x = new Student();
+        x = fileService.students[name];
+        Console.WriteLine(x.Name);
+        foreach (var grade in x.Grades)
+        {
+            Console.WriteLine($"predmet: {grade.Key}  ocenka: {grade.Value}");
+        }
+        foreach (var att in x.Attendance)
+        {
+            Console.WriteLine($"data: {att.Key}  posechayemost: {att.Value}");
+        }
     }
 
     public Student GetStudent(string name)
