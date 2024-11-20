@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using System.Text.Json;
 
 namespace WebApplication1.Controllers
 {
@@ -6,7 +8,7 @@ namespace WebApplication1.Controllers
     [Route("[controller]")]
     public class StoreController : ControllerBase
     {
-        List <string> Products { get; set; }
+        List <Product> Products { get; set; }
 
         private readonly ILogger<StoreController> _logger;
 
@@ -17,14 +19,18 @@ namespace WebApplication1.Controllers
 
         [HttpPost]
         [Route("store/add")]
-        public IActionResult AddProduct(string productName)
+        public IActionResult AddProduct(string productName, int cost, int stock)
         {
-            Products.Add(productName);
+            Product product = new Product();
+            product.Name = productName;
+            product.Cost = cost;
+            product.Stock = stock; //В методе апдейт продукт было бы  product.Stock += stock;
+            Products.Add(product);
             return Ok();
         }
         [HttpDelete]
         [Route("store/add")]
-        public IActionResult DeleteProduct(string productName)
+        public IActionResult DeleteProduct(Product productName)
         {
             Products.Remove(productName);
             return Ok();
