@@ -1,6 +1,7 @@
 namespace PracticeA;
 
 using Microsoft.AspNetCore.Mvc;
+using System.Xml.Linq;
 
 [ApiController]
 public class StoreController : ControllerBase
@@ -21,7 +22,7 @@ public class StoreController : ControllerBase
 
     private static readonly List<Product> Items = new List<Product>();
 
-    [HttpGet]
+    [HttpPut]
     [Route("/store/updateprice")]
     public IActionResult UpdatePrice(string name, double newPrice)
     {
@@ -37,7 +38,7 @@ public class StoreController : ControllerBase
         }
     }
 
-    [HttpGet]
+    [HttpPut]
     [Route("/store/updatename")]
     public IActionResult UpdateName(string currentName, string newName)
     {
@@ -74,7 +75,7 @@ public class StoreController : ControllerBase
 
 
 
-    [HttpGet]
+    [HttpPost]
     [Route("/store/add")]
     public IActionResult Add(string name, double price, int stock)
     {
@@ -84,7 +85,7 @@ public class StoreController : ControllerBase
     }
 
 
-    [HttpGet]
+    [HttpDelete]
     [Route("/store/delete")]
     public IActionResult Delete(string name)
     {
@@ -108,5 +109,20 @@ public class StoreController : ControllerBase
         return Ok(Items);
     }
 
-
+    [HttpPost]
+    [Route("/store/auth")]
+    public IActionResult Auth([FromBody] UserCredentials user)
+    {
+        if ((user.User == "admin") && (user.Pass == "123"))
+        {
+            return Ok();
+        }
+        else
+        {
+            return NotFound($"{user.User} не найден");
+        }
+    }
+    
 }
+
+

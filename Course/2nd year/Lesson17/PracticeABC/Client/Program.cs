@@ -25,19 +25,20 @@ class Program
     static bool IsAuthorized = false;
 
     static void DisplayProducts()
+    {
+        var url = "http://localhost:7268/store/show";
+        var client = new HttpClient();
+        var response = client.GetAsync(url).Result;
+        string responseContent = response.Content.ReadAsStringAsync().Result;
+        List<Product> products = JsonSerializer.Deserialize<List<Product>>(responseContent);// получаем, десериализуем, выводим
+        Console.WriteLine("-----------------------------------------------------------------");
+        Console.WriteLine("| Название продукта | Цена | Количество на складе |");
+        foreach (var product in products)
         {
-            var url = "http://localhost:5087/store/show"; // Замените на порт вашего сервера
-            
-            // реализуй логику
-
-
-            Console.WriteLine("-----------------------------------------------------------------");
-            Console.WriteLine("| Название продукта | Цена | Количество на складе |"); 
-
-
-
-            Console.WriteLine("-----------------------------------------------------------------");
+            Console.WriteLine($"| {product.name,-18} | {product.price,-5} | {product.stock,-19} |");//ну так написано в подсказке, скорее всего, выводит чуть красивее
         }
+        Console.WriteLine("-----------------------------------------------------------------");
+    }
 
 
     public static void SendProduct()
@@ -48,7 +49,7 @@ class Program
                 return;        
             }
         
-            var url = "http://localhost:5087/store/add"; // Замените на порт вашего сервера
+            var url = "http://localhost:7268/store/add";
             Console.WriteLine("Введите название продукта:");
             var name = Console.ReadLine();
             Console.WriteLine("Введите цену продукта:");
@@ -84,7 +85,7 @@ class Program
     {       
         
         
-            var url = "http://localhost:5087/store/????"; // Замените на порт вашего сервера, также замените символы на правильный апи
+            var url = "http://localhost:7268/store/auth";
             var userData = new
             {
                 User = "admin",
@@ -114,18 +115,29 @@ class Program
     { 
         Console.OutputEncoding = System.Text.Encoding.UTF8;
         while (true)
-                {
-                    Console.WriteLine("Выберите опцию:");
-                     
+        {
+            Console.WriteLine("Выберите опцию:");
+            Console.WriteLine("1: Авторизоваться");
+            Console.WriteLine("2: Послать продукт");
+            Console.WriteLine("3: Вывести продукты");
+            Console.Write("Введите ваш выбор: ");
 
-                    var choice = Console.ReadLine();
-
-                    switch (choice)
-                    { 
-                        default:
-                            Console.WriteLine("Неверный выбор. Попробуйте снова.");
-                            break;
-                    }
+            var choice = Console.ReadLine();
+            switch (choice)//хорошо, что изучал такую конструкцию, когда изучал C++
+            {
+                case "1":
+                    Auth(); 
+                    break;
+                case "2":
+                    SendProduct();
+                    break;
+                case "3":
+                    DisplayProducts(); 
+                    break;
+                default:
+                    Console.WriteLine("Неверный выбор. Попробуйте снова.");
+                    break;
                 }
+            }
     }
 }
