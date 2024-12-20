@@ -69,18 +69,14 @@ class Program
     static void Main(string[] args)
     {
         // Создаем экземпляры шутника и клоуна 
-        ITalkable clown = new Clown();
-        IJokeable clown1 = new Clown();
-        ITalkable joker = new Joker();
-        IJokeable joker1 = new Joker();
-        IDanceable joker2 = new Joker();
-        ISingable joker3 = new Joker();
+        Clown clown = new Clown();
+        Joker joker = new Joker();
         // Используем методы через интерфейсы
         clown.Talk();
-        clown1.TellJoke();
-        joker.Talk(); 
-        joker1.TellJoke();
-        joker2.Dance();
-        joker3.Sing();
+        clown.TellJoke();
+        joker.Talk();
+        joker.Dance();
+        joker.TellJoke();
+        joker.Sing();
     }
 }
